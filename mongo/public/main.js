@@ -18,22 +18,23 @@ update.addEventListener("click", function() {
         });
 });
 
-app.put("/quotes", (req, res) => {
-    db.collection("quotes").findOneAndUpdate(
-        { name: "Yoda" },
-        {
-            $set: {
-                name: req.body.name,
-                quote: req.body.quote
-            }
+let del = document.getElementById("delete");
+
+del.addEventListener("click", function() {
+    fetch("quotes", {
+        method: "delete",
+        headers: {
+            "Content-Type": "application/json"
         },
-        {
-            sort: { _id: -1 },
-            upsert: true
-        },
-        (err, result) => {
-            if (err) return res.send(err);
-            res.send(result);
-        }
-    );
+        body: JSON.stringify({
+            name: "Darth Vader"
+        })
+    })
+        .then(res => {
+            if (res.ok) return res.json();
+        })
+        .then(data => {
+            console.log(data);
+            window.location.reload();
+        });
 });
